@@ -1,39 +1,44 @@
 ## Table of Contents
 
 1. [문서 개요](#1)  
-  1.1. [목적](#1.1)  
-  1.2. [범위](#1.2)  
-  1.3. [시스템 구성도](#1.3)  
-  1.4. [참고자료](#1.4)  
+  1.1. [목적](#1-1)  
+  1.2. [범위](#1-2)  
+  1.3. [시스템 구성도](#1-3)  
+  1.4. [참고자료](#1-4)  
 
 2. [PaaS-TA Portal 설치](#2)  
-  2.1. [Prerequisite](#2.1)   
-  2.2. [Stemcell 확인](#2.2)    
-  2.3. [Deployment 다운로드](#2.3)   
-  2.4. [Deployment 파일 수정](#2.4)  
-  2.5. [서비스 설치](#2.5)    
-  2.6. [서비스 설치 - 다운로드 된 PaaS-TA Release 파일 이용 방식](#2.6)   
-  2.7. [서비스 설치 확인](#2.7)  
+  2.1. [PaaS-TA Portal API Release 설치](#2-1)   
+  2.2. [소스코드 다운로드](#2-2)    
+  2.3. [PaaS-TA Portal CF 배포](#2-3)   
+  2.3.1. [Portal Web Admin 배포](#2-3-1)   
+  2.3.2. [Portal Web User 배포](#2-3-2)   
+  2.3.3. [Portal Registration 배포](#2-3-3)   
+  2.3.4. [Portal Gateway 배포](#2-3-4)   
+  2.3.5. [Portal Api 배포](#2-3-5)   
+  2.3.6. [Portal Storage Api 배포](#2-3-6)   
+  2.3.7. [Portal Common Api 배포](#2-3-7)   
+  2.3.8. [Portal Log Api 배포](#2-3-8)   
+  2.3.9. [Portal SSH 배포](#2-3-9)   
+  2.4. [rule](#2-4)  
 
 3. [PaaS-TA Portal 운영](#3)  
-  3.1. [사용자의 조직 생성 Flag 활성화](#3.1)  
-  3.2. [사용자포탈 UAA 페이지 오류](#3.2)  
-  3.3. [운영자포탈 유저 페이지 조회 오류](#3.3)  
-  3.4. [Log](#3.4)  
-  3.5. [카탈로그 적용](#3.5)  
-  3.6. [모니터링 및 오토스케일링 적용](#3.6)  
+  3.1. [사용자의 조직 생성 Flag 활성화](#3-1)  
+  3.2. [사용자포탈 UAA 페이지 오류](#3-2)  
+  3.3. [운영자포탈 유저 페이지 조회 오류](#3-3)  
+  3.4. [카탈로그 적용](#3-4)  
+  3.5. [모니터링 및 오토스케일링 적용](#3-5)  
 
 
 ## <div id="1"/> 1. 문서 개요
-### <div id="1.1"/> 1.1. 목적
+### <div id="1-1"/> 1.1. 목적
 
 본 문서(PaaS-TA Portal Container 설치 가이드)는 전자정부표준프레임워크 기반의 PaaS-TA에서 제공되는 PaaS-TA Portal 을 CF를 이용하여 배포 하는 방법을 기술하였다.<br />
 기존 Release 를 사용한 VM 배포에서 CF Container 로 배포하면서 VM 수 감소로 인한 PaaS-TA 경량화에 목적이 있다.
 
-### <div id="1.2"/> 1.2. 범위
+### <div id="1-2"/> 1.2. 범위
 설치 범위는 PaaS-TA Portal API Release 설치 및 API 6개 서비스, UI 3개 설치를 기준으로 작성하였다.
 
-### <div id="1.3"/> 1.3. 시스템 구성도
+### <div id="1-3"/> 1.3. 시스템 구성도
 본 문서의 설치된 시스템 구성도이다. Binary Storage, Mariadb, Proxy, Gateway Api, Registration Api, Portal Api, Common Api, Log Api, Storage Api, Webadmin, Webuser로 최소사항을 구성하였다.
 
 본 문서의 설치된 시스템 구성도 이다.<br />
@@ -60,18 +65,18 @@ API : Registration API, Gateway API,  Common API, Portal API, Storage API, Log A
 * API Release 는 API Release 가이드 참조.<br />
   [**https://github.com/PaaS-TA/PAAS-TA-PORTAL-API-RELEASE**](https://github.com/PaaS-TA/PAAS-TA-PORTAL-API-RELEASE)
 
-### <div id="1.4"/> 1.4. 참고자료
+### <div id="1-4"/> 1.4. 참고자료
 [**http://bosh.io/docs**](http://bosh.io/docs)  
 [**http://docs.cloudfoundry.org/**](http://docs.cloudfoundry.org/)
 
 ## <div id="2"/> 2. PaaS-TA Portal 설치
 
-### <div id="2.1"/> 2.1. PaaS-TA Portal API Release 설치
+### <div id="2-1"/> 2.1. PaaS-TA Portal API Release 설치
 API Release 가이드 참조.<br />
 [**https://github.com/PaaS-TA/PAAS-TA-PORTAL-API-RELEASE**](https://github.com/PaaS-TA/PAAS-TA-PORTAL-API-RELEASE)
 
 
-### <div id="2.2"/> 2.2. Deployment 다운로드  
+### <div id="2-2"/> 2.2. 소스코드 다운로드
 서비스 설치에 필요한 소스 코드를 Git Repository에서 받아 서비스 설치 작업 경로로 위치시킨다.   
 
 - Portal Web User Git Repository URL : https://github.com/PaaS-TA/PAAS-TA-PORTAL-WEBADMIN
@@ -101,14 +106,14 @@ $ git clone https://github.com/PaaS-TA/PAAS-TA-PORTAL-LOG-API.git -b v2.1.0
 $ git clone https://github.com/PaaS-TA/PAAS-TA-PORTAL-SSH.git
 ```
 
-### <div id="2.3"/> 2.3. PaaS-TA Portal CF 배포
+### <div id="2-3"/> 2.3. PaaS-TA Portal CF 배포
 본 설치 가이드는 Linux 환경에서 설치하는 것을 기준으로 하였다.
 Portal 배포를 위해서는 먼저 CF CLI 가 설치 되어 있어야 하고 CF 로그인 및 배포할 Target 가 지정 되어 있어야 한다.<br>
 
 - CF CLI 사용자 가이드  
   - [CF CLI 사용자 가이드](https://docs.cloudfoundry.org/cf-cli/index.html)<br>
 
-#### <div id="2.3.1"/> 2.3.1. Portal Web Admin 배포
+#### <div id="2-3-1"/> 2.3.1. Portal Web Admin 배포
 해당 소스를 빌드한다.
 > $ gradlew clean build
 
@@ -150,7 +155,7 @@ manifest.yml 파일 확인 후 CF 에 배포한다
 배포가 완료되면 로그를 확인 할 수 있다.
 > $ cf logs portal-web-admin --recent
 
-#### <div id="2.3.2"/> 2.3.2. Portal Web User 배포
+#### <div id="2-3-2"/> 2.3.2. Portal Web User 배포
 해당 소스를 빌드한다.
 > $ npm run build
 
@@ -185,7 +190,7 @@ manifest.yml 파일 확인 후 CF 에 배포한다
 배포가 완료되면 로그를 확인 할 수 있다.
 > $ cf logs portal-web-user --recent
 
-#### <div id="2.3.3"/> 2.3.3. Portal Registration 배포
+#### <div id="2-3-3"/> 2.3.3. Portal Registration 배포
 해당 소스를 빌드한다.
 > $ gradlew clean build
 
@@ -224,7 +229,7 @@ manifest.yml 파일 확인 후 CF 에 배포한다
 배포가 완료되면 로그를 확인 할 수 있다.
 > $ cf logs portal-registration --recent
 
-#### <div id="2.3.4"/> 2.3.4. Portal Gateway 배포
+#### <div id="2-3-4"/> 2.3.4. Portal Gateway 배포
 해당 소스를 빌드한다.
 > $ gradlew clean build
 
@@ -258,7 +263,7 @@ manifest.yml 파일 확인 후 CF 에 배포한다
 배포가 완료되면 로그를 확인 할 수 있다.
 > $ cf logs portal-gateway --recent
 
-#### <div id="2.3.5"/> 2.3.5. Portal Api 배포
+#### <div id="2-3-5"/> 2.3.5. Portal Api 배포
 해당 소스를 빌드한다.
 > $ gradlew clean build
 
@@ -327,7 +332,7 @@ manifest.yml 파일 확인 후 CF 에 배포한다
 배포가 완료되면 로그를 확인 할 수 있다.
 > $ cf logs portal-api --recent
 
-#### <div id="2.3.6"/> 2.3.6. Portal Storage Api 배포
+#### <div id="2-3-6"/> 2.3.6. Portal Storage Api 배포
 해당 소스를 빌드한다.
 > $ gradlew clean build
 
@@ -371,7 +376,7 @@ manifest.yml 파일 확인 후 CF 에 배포한다
 배포가 완료되면 로그를 확인 할 수 있다.
 > $ cf logs portal-storage-api --recent
 
-#### <div id="2.3.7"/> 2.3.7. Portal Common Api 배포
+#### <div id="2-3-7"/> 2.3.7. Portal Common Api 배포
 해당 소스를 빌드한다.
 > $ gradlew clean build
 
@@ -446,7 +451,7 @@ manifest.yml 파일 확인 후 CF 에 배포한다
 배포가 완료되면 로그를 확인 할 수 있다.
 > $ cf logs portal-common-api --recent
 
-#### <div id="2.3.7"/> 2.3.7. Portal Log Api 배포
+#### <div id="2-3-8"/> 2.3.8. Portal Log Api 배포
 해당 소스를 빌드한다.
 > $ gradlew clean build
 
@@ -504,7 +509,7 @@ manifest.yml 파일 확인 후 CF 에 배포한다
 배포가 완료되면 로그를 확인 할 수 있다.
 > $ cf logs portal-log-api --recent
 
-#### <div id="2.3.7"/> 2.3.7. Portal SSH 배포
+#### <div id="2-3-9"/> 2.3.9. Portal SSH 배포
 해당 소스를 빌드 방법은 소스의 [readme.md](https://github.com/PaaS-TA/PAAS-TA-PORTAL-SSH/blob/master/README.md) 파일을 참고한다.
 
 
@@ -529,11 +534,23 @@ manifest.yml 파일 확인 후 CF 에 배포한다
 배포가 완료되면 로그를 확인 할 수 있다.
 > $ cf logs portal-log-api --recent
 
+### <div id="2-4"/> 2.4. rule
+Common Api 혹은 Storage Api 구동시 서비스 접속 에러로 App 구동이 안될 경우 보안 그룹을 추가한다.
+> $ cf create-security-group ui-infra rule.json <br>
+>![paas-ta-portal-security-01]<br>
+> $ cf bind-staging-security-group ui-infra<br>
+>![paas-ta-portal-security-02]<br>
+> $ cf bind-running-security-group ui-infra<br>
+>![paas-ta-portal-security-03]<br>
+
+완료 후 App을 재 기동 한다.<br>
+> $ cf restart portal-common-api
+> $ cf restart portal-storage-api
 
 
 ## <div id="3"/>3. PaaS-TA Portal 운영
 
-### <div id="3.1"/> 3.1. 사용자의 조직 생성 Flag 활성화 
+### <div id="3-1"/> 3.1. 사용자의 조직 생성 Flag 활성화
 
 PaaS-TA는 기본적으로 일반 사용자는 조직을 생성할 수 없도록 설정되어 있다. 포털 배포를 위해 조직 및 공간을 생성해야 하고 또 테스트를 구동하기 위해서도 필요하므로 사용자가 조직을 생성할 수 있도록 user_org_creation FLAG를 활성화 한다. FLAG 활성화를 위해서는 PaaS-TA 운영자 계정으로 로그인이 필요하다.
 
@@ -547,7 +564,7 @@ OK
 Feature user_org_creation Enabled.
 ```
 
-### <div id="3.2"/> 3.2. 사용자포탈 UAA페이지 오류
+### <div id="3-2"/> 3.2. 사용자포탈 UAA페이지 오류
 >![paas-ta-portal-31]
 1. uaac portalclient가 등록이 되어있지 않다면 해당 화면과 같이 redirect오류가 발생한다.
 2. uaac client add를 통해 potalclient를 추가시켜주어야 한다.
@@ -574,23 +591,7 @@ $ uaac client add portalclient -s xxxxx --redirect_uri "http://portal-web-user.x
 3. uaac client update portalclient --redirect_uri "사용자포탈 Url, 사용자포탈 Url/callback"
     >$ uaac client update portalclient --redirect_uri "http://portal-web-user.xxxx.xip.io, http://portal-web-user.xxxx.xip.io/callback"
 
-### <div id="3.3"/> 3.3. 운영자 포탈 유저 페이지 조회 오류
-1. 페이지 이동시 정보를 가져오지 못하고 오류가 났을 경우 common-api VM으로 이동후에 DB 정보 config를 수정후 재시작을 해 주어야 한다.
-
-### <div id="3.4"/> 3.4. rule
-Common Api 혹은 Storage Api 구동시 서비스 접속 에러로 App 구동이 안될 경우 보안 그룹을 추가한다.
-> $ cf create-security-group ui-infra rule.json <br>
->![paas-ta-portal-security-01]<br>
-> $ cf bind-staging-security-group ui-infra<br>
->![paas-ta-portal-security-02]<br>
-> $ cf bind-running-security-group ui-infra<br>
->![paas-ta-portal-security-03]<br>
-
-완료 후 App을 재 기동 한다.<br>
-> $ cf restart portal-common-api
-> $ cf restart portal-storage-api
-
-### <div id="3.5"/> 3.5. 카탈로그 적용
+### <div id="3-3"/> 3.3. 카탈로그 적용
 ##### 1. Catalog 빌드팩, 서비스팩 추가
 Paas-TA Portal 설치 후에 관리자 포탈에서 빌드팩, 서비스팩을 등록해야 사용자 포탈에서 사용이 가능하다.
  
@@ -605,7 +606,7 @@ Paas-TA Portal 설치 후에 관리자 포탈에서 빌드팩, 서비스팩을 �
  4. 사용자포탈에서 변경된값이 적용되어있는지 확인한다.
     >![paas-ta-portal-19] 
     
-### <div id="3.6"/> 3.6. 모니터링 및 오토스케일링 적용
+### <div id="3-4"/> 3.4. 모니터링 및 오토스케일링 적용
 ##### 1. 포탈 설치 이전 모니터링 설정 적용
 ###### 1.PaaS-TA 에서 제공하고있는 모니터링을 미리 설치를 한 후에 진행해야 한다.
  1. Paas-TA Portal 설치 시 공통 변수 파일과 Deployment 변수 파일의 monitoring_api_url=<모니터링 API URL>, webuser_monitoring=true로 적용 한 후 설치 하면 정상적으로 모니터링 페이지 및 오토스케일링을 사용 할 수 있다.
