@@ -76,7 +76,7 @@ PaaS-TA 3.1 버전까지는  PaaS-TA Container, Controller를 각각의 deployme
 - PaaS-TA를 설치하기 위한 deployment가 존재하지 않는다면 다운로드 받는다
 ```
 $ cd ${HOME}/workspace/paasta-5.0/deployment
-$ git clone https://github.com/paas-ta/monitoring-deployment.git –b monitoring-5.0.0
+$ git clone https://github.com/paas-ta/monitoring-deployment.git -b monitoring-5.0.0
 ```
 
 - 서비스 설치에 필요한 릴리즈 파일을 다운로드 받아 Local machine의 작업 경로로 위치시킨다.  
